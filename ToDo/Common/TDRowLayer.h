@@ -15,4 +15,7 @@
 @property (nonatomic,retain) CALayer *bottomHalfLayer;
 @property (nonatomic,retain) CATextLayer *topHalfTextLayer;
 @property (nonatomic,retain) CATextLayer *bottomHalfTextLayer;
+- (void)abc;
++ (void)abc1;
+
 @end

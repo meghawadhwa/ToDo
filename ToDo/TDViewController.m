@@ -195,7 +195,7 @@
 
 - (TDListCustomRow *)RowAtPoint:(CGPoint)point
 {
-    NSLog(@"custom array :%@",self.customViewsArray);
+    //NSLog(@"custom array :%@",self.customViewsArray);
     for ( TDListCustomRow *row in self.customViewsArray)
         if ( CGRectContainsPoint(row.frame, point ) )
             return row;
@@ -235,15 +235,28 @@
         CGRect frame = uncheckedRow.frame;
         if ( pinch && uncheckedRow == customNewRow && scale > 1 && state == UIGestureRecognizerStateChanged )
         {
+            CGRect layerFrame = uncheckedRow.layer.frame;
+            TDRowLayer *innerlayer = [uncheckedRow.layer.sublayers lastObject];
+            CGRect innerlayerFrame = innerlayer.frame;
             if ( creating )
                 scale = fmaxf(scale - 1, 0);
             
             CGFloat dy = ROW_HEIGHT * scale;
             if ( creating && scale < 1 )
+            {
                 frame.origin.y = y;
+                layerFrame.origin.y =y;
+                innerlayerFrame.origin.y = y;
+            }
             else
+            {
                 frame.origin.y = y + 0.5 * (dy - ROW_HEIGHT);
+                layerFrame.origin.y = y + 0.5 * (dy - ROW_HEIGHT);
+                innerlayerFrame.origin.y = y + 0.5 * (dy - ROW_HEIGHT);
+            } 
             uncheckedRow.frame = frame;
+            uncheckedRow.layer.frame = layerFrame;
+            innerlayer.frame = innerlayerFrame;
             y += dy;
         }
         else

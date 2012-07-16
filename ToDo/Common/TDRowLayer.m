@@ -23,26 +23,26 @@
         
         self.topHalfLayer = [CALayer layer];
         self.topHalfLayer.anchorPoint = CGPointMake(0.5, 1);
-        self.topHalfLayer.backgroundColor = [UIColor clearColor].CGColor;
+        self.topHalfLayer.backgroundColor = [UIColor yellowColor].CGColor;
         
         self.bottomHalfLayer = [CALayer layer];
         self.bottomHalfLayer.anchorPoint = CGPointMake(0.5, 0);
-        self.bottomHalfLayer.backgroundColor = [UIColor clearColor].CGColor;
+        self.bottomHalfLayer.backgroundColor = [UIColor yellowColor].CGColor;
     
         [self addSublayer:self.topHalfLayer];
         [self addSublayer:self.bottomHalfLayer];
         CGFloat y = 18.0;
         CGFloat textHeight = 30.0;
         self.topHalfTextLayer = [CATextLayer layer];
-        self.topHalfTextLayer.string = nil;
-        self.topHalfTextLayer.fontSize = 20;
+        self.topHalfTextLayer.string = @"PUll to Create";
+        self.topHalfTextLayer.fontSize = 12;
         self.topHalfTextLayer.font = CGFontCreateWithFontName(CFSTR("HelveticaNeue-Bold"));
         self.topHalfTextLayer.contentsScale = [[UIScreen mainScreen] scale];
         self.topHalfTextLayer.frame = CGRectMake(20,y,300,textHeight);
         [self.topHalfLayer addSublayer:self.topHalfTextLayer];
         
         self.bottomHalfTextLayer = [CATextLayer layer];
-        self.bottomHalfTextLayer.string = nil;
+        self.bottomHalfTextLayer.string = @"PUll to Create";
         self.bottomHalfTextLayer.fontSize = self.topHalfTextLayer.fontSize;
         self.topHalfTextLayer.font = self.topHalfTextLayer.font;
         self.bottomHalfTextLayer.contentsScale = self.topHalfTextLayer.contentsScale;
@@ -50,7 +50,6 @@
         self.bottomHalfTextLayer.contentsRect = CGRectMake(0,(textHeight - y)/textHeight,1,1);
         self.bottomHalfTextLayer.rasterizationScale = self.bottomHalfTextLayer.contentsScale;
         [self.bottomHalfLayer addSublayer:self.bottomHalfTextLayer];
-
 
     }
     return self;
@@ -62,9 +61,16 @@
     self.topHalfLayer = delegate;
     self.bottomHalfLayer = delegate;
 }
-- (void)layoutSublayers
+
++ (void)abc1
+{
+    NSLog(@"i'm called");
+}
+
+- (void)abc
 {    
-    [super layoutSublayers];
+    NSLog(@" layout changed");
+    //[super layoutSublayers];
     CGSize size = self.bounds.size; 
     
     NSLog(@" Lay out sub layers here !!!!!!!!!!!!!!!!!!!!!!");    

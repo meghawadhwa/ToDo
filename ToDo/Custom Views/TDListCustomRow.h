@@ -34,9 +34,9 @@
 @property(nonatomic,retain)UIImageView *checkImgView;
 @property(nonatomic,retain)UIImageView *deleteImgView;
 @property(assign) id<TDCustomRowTappedDelegate> tapDelegate;
-//@property (nonatomic,retain) CALayer *topHalfLayer;
-//@property (nonatomic,retain) CALayer *bottomHalfLayer;
-@property (nonatomic,retain) TDRowLayer *innerLayer;
+@property (nonatomic,retain) CALayer *topHalfLayer;
+@property (nonatomic,retain) CALayer *bottomHalfLayer;
+//@property (nonatomic,retain) TDRowLayer *innerLayer;
 
 - (void)makeStrikedLabel;
 - (void)makeCheckedIcon;
@@ -47,5 +47,5 @@
 - (void)doneOverlayViewTapped;
 - (void)divideIntoTwoLayers;
 //- (void)layoutSublayers;
-
+- (void)test;
 @end

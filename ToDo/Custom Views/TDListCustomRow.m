@@ -16,7 +16,7 @@
 
 @implementation TDListCustomRow
 @synthesize listTextField;
-@synthesize swipeDelegate;
+@synthesize swipeDelegate; 
 @synthesize initialCentre;
 @synthesize rightSwipeDetected,leftSwipeDetected;
 @synthesize strikedLabel;
@@ -27,8 +27,8 @@
 @synthesize  doneOverlayView;
 @synthesize tapDelegate;
 @synthesize deleteImgView,checkImgView;
-//@synthesize topHalfLayer,bottomHalfLayer;
-@synthesize innerLayer;
+@synthesize topHalfLayer,bottomHalfLayer;
+//@synthesize innerLayer;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -53,7 +53,7 @@
         [self addGestureRecognizer:tapGesture];
         tapGesture = nil;
         self.multipleTouchEnabled = NO;
-        [self divideIntoTwoLayers];
+        //[self divideIntoTwoLayers];
     }
     return self;
 }
@@ -368,18 +368,18 @@
 
 - (void)divideIntoTwoLayers
 {   
-//    CATransform3D transform = CATransform3DIdentity;
-//    transform.m34 = -1/200.0;
-//    self.layer.sublayerTransform = transform;
-//
-//    self.topHalfLayer = [CALayer layer];
-//    self.topHalfLayer.anchorPoint = CGPointMake(0.5, 1);
-//    self.topHalfLayer.backgroundColor = [UIColor clearColor].CGColor;
-//    
-//    self.bottomHalfLayer = [CALayer layer];
-//    self.bottomHalfLayer.anchorPoint = CGPointMake(0.5, 0);
-//    self.bottomHalfLayer.backgroundColor = [UIColor clearColor].CGColor;
-//
+    CATransform3D transform = CATransform3DIdentity;
+    transform.m34 = -1/200.0;
+    self.layer.sublayerTransform = transform;
+
+    self.topHalfLayer = [CALayer layer];
+    self.topHalfLayer.anchorPoint = CGPointMake(0.5, 1);
+    self.topHalfLayer.backgroundColor = [UIColor clearColor].CGColor;
+    
+    self.bottomHalfLayer = [CALayer layer];
+    self.bottomHalfLayer.anchorPoint = CGPointMake(0.5, 0);
+    self.bottomHalfLayer.backgroundColor = [UIColor clearColor].CGColor;
+
 //    CGRect halfRect = CGRectMake(0, 0, ROW_WIDTH, 0.5 * ROW_HEIGHT);
 //    self.topHalfLayer.bounds = halfRect;
 //    self.bottomHalfLayer.bounds = halfRect;
@@ -388,22 +388,35 @@
 //    self.topHalfLayer.position = midpoint;
 //    self.bottomHalfLayer.position = midpoint;
 //    
-//    [self.layer addSublayer:self.topHalfLayer];
-//    [self.layer addSublayer:self.bottomHalfLayer];
+    [self.layer addSublayer:self.topHalfLayer];
+    [self.layer addSublayer:self.bottomHalfLayer];
 
-    self.innerLayer = [TDRowLayer layer];
-    [self.layer addSublayer:self.innerLayer];
+//    self.innerLayer = [TDRowLayer layer];
+//    self.innerLayer.topHalfLayer.backgroundColor = self.defaultRowColor.CGColor;
+//    self.innerLayer.bottomHalfLayer.backgroundColor = self.defaultRowColor.CGColor;
+//    [self.layer addSublayer:self.innerLayer];
 }
 
 //- (void)layoutSublayers
-//{    
+- (void)test
+{    
+//    CGSize size = self.bounds.size; 
+//    
 //    NSLog(@" Lay out sub layers here !!!!!!!!!!!!!!!!!!!!!!");    
+//    CGRect halfRect = CGRectMake(0, 0, size.width, 0.5 * ROW_HEIGHT);
+//    self.topHalfLayer.bounds = halfRect;
+//    self.bottomHalfLayer.bounds = halfRect;
+//    
+//    CGPoint midpoint = CGPointMake(0.5 * size.width, 0.5 * size.height);
+//    self.topHalfLayer.position = midpoint;
+//    self.bottomHalfLayer.position = midpoint;
+//    
 //    CGFloat y = 0.5 * self.bounds.size.height;
 //    CGFloat l = 0.5 * ROW_HEIGHT;
-//    CGFloat theta = acosf(y/l);
-//    CGFloat zTranslationValue = l * sinf(theta);
-//    CGFloat topAngle = theta;
-//    CGFloat bottomAngle = theta;
+//    CGFloat angle = acosf(y/l);
+//    CGFloat zTranslationValue = l * sinf(angle);
+//    CGFloat topAngle = angle;
+//    CGFloat bottomAngle = angle;
 //    
 //    // For pinch
 //    topAngle *= -1;
@@ -411,6 +424,29 @@
 //    CATransform3D transform = CATransform3DMakeTranslation(0, 0, -zTranslationValue);
 //    self.topHalfLayer.transform = CATransform3DRotate(transform, topAngle , 1.0, 0.0, 0.0);
 //    self.bottomHalfLayer.transform =CATransform3DRotate(transform, bottomAngle , 1.0, 0.0, 0.0);
-//}
+//
+    CGFloat fraction = (self.frame.size.height / ROW_HEIGHT);
+    fraction = MAX(MIN(1, fraction), 0);
+    
+    CGFloat angle = (M_PI / 2) - asinf(fraction);
+    CATransform3D transform = CATransform3DMakeRotation(angle, -1, 0, 0);
+    [self.topHalfLayer setTransform:transform];
+    [self.bottomHalfLayer setTransform:CATransform3DMakeRotation(angle, 1, 0, 0)];
+    
+//    self.textLabel.backgroundColor       = [self.tintColor colorWithBrightness:0.3 + 0.7*fraction];
+//    self.detailTextLabel.backgroundColor = [self.tintColor colorWithBrightness:0.5 + 0.5*fraction];
+//    
+    CGSize contentViewSize = self.frame.size;
+    CGFloat contentViewMidY = contentViewSize.height / 2;
+    CGFloat labelHeight = ROW_HEIGHT / 2;
+    
+    // OPTI: Always accomodate 1 px to the top label to ensure two labels 
+    // won't display one px gap in between sometimes for certain angles 
+    self.topHalfLayer.frame = CGRectMake(0, contentViewMidY - (labelHeight * fraction),
+                                      contentViewSize.width, labelHeight + 1);
+    self.bottomHalfLayer.frame = CGRectMake(0, contentViewMidY - (labelHeight * (1 - fraction)),
+                                            contentViewSize.width, labelHeight);
+
+}
 
 @end

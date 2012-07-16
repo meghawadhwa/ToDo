@@ -10,6 +10,7 @@
 #import "TDListCustomRow.h"
 #import <QuartzCore/QuartzCore.h>
 #import "TDListCustomRow.h"
+#import "TDRowLayer.h"
 
 #define HORIZ_SWIPE_DRAG_MAX  4
 #define VERT_PULL_DRAG_MIN   55
@@ -57,9 +58,9 @@ static float rotationAngle; // global variable
         self.backgroundColor = [UIColor blackColor];
         [self setUserInteractionEnabled:YES];
         self.multipleTouchEnabled = YES;
-        self.pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchHandler:)];
-        [self addGestureRecognizer:self.pinchRecognizer];
-        creatingNewRow = NO;
+//        self.pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchHandler:)];
+//        [self addGestureRecognizer:self.pinchRecognizer];
+//        creatingNewRow = NO;
         }
     return self;
 }
@@ -121,6 +122,7 @@ static float rotationAngle; // global variable
 //            int height = (midRowIndex +1) * ROW_HEIGHT; // New Row is added below the middle Row during a pinch out
             
             [self makeNewPinchedRowatHeight:CGRectGetMaxY(customRow.frame)]; // created a new row,added to sub view also
+            NSLog(@" frame : %f",self.customNewRow.frame.size.height);
  //           [self.customNewRow.layer setDelegate:self];
             [self.pinchOutdelegate addNewRow:self.customNewRow AtIndex:midRowIndex+1];
             creatingNewRow = YES; 
@@ -129,7 +131,7 @@ static float rotationAngle; // global variable
 //            if ([self.pinchOutdelegate isLastObjectOnView:customNewRow]) {
 //               
 //            }
-           // [self.customNewRow divideIntoTwoLayers];
+            [self.customNewRow divideIntoTwoLayers];
             break;
         }
             case UIGestureRecognizerStateChanged:
@@ -138,8 +140,9 @@ static float rotationAngle; // global variable
                 return;
             }
             
-            [[self.customNewRow.layer.sublayers objectAtIndex:0] layoutSublayers];
-            
+//            TDRowLayer *innerLayer = [self.customNewRow.layer.sublayers objectAtIndex:1]; 
+//            [innerLayer layoutSublayers];
+//            [innerLayer setNeedsDisplay];
             CGFloat frameScale = scale;        
             if (pinch && creatingNewRow) {
                 frameScale = fmaxf(frameScale - 1.0, 0);
@@ -147,11 +150,21 @@ static float rotationAngle; // global variable
                 
                 frameScale = fmaxf(frameScale, 0);
                 
-                CGRect frame = self.customNewRow.layer.frame;
+                CGRect frame = self.customNewRow.frame;
                 frame.size.height = ROW_HEIGHT * frameScale;
-                self.customNewRow.layer.frame = frame;
-                //[self.customNewRow.layer layoutSublayers];
-            break;
+                self.customNewRow.frame = frame;
+                
+                CGRect layerframe = self.customNewRow.layer.frame;
+                layerframe.size.height = ROW_HEIGHT * frameScale;
+                self.customNewRow.layer.frame = layerframe;
+                
+//                CGRect innerlayerframe = innerLayer.frame;
+//                innerlayerframe.size.height = ROW_HEIGHT * frameScale;
+//                innerLayer.frame = layerframe;
+                
+                NSLog(@" frame : %f",self.customNewRow.frame.size.height);
+                [self.customNewRow test];
+                break;
             }
         }
             case UIGestureRecognizerStateEnded:
@@ -188,14 +201,12 @@ static float rotationAngle; // global variable
 
 - (void)makeNewPinchedRowatHeight:(float) height
 {
-    if (self.customNewRow) {
+    if (self.customNewRow !=nil) {
         self.customNewRow.listTextField.text =PINCH_OUT_TEXT;
         return;
     }  
-    TDListCustomRow * newRow;
-    if (self.customNewRow == nil) {
-        newRow = [[TDListCustomRow alloc]initWithFrame:CGRectMake(0,height, ROW_WIDTH , 0)];
-        self.customNewRow = newRow;
+    else if (self.customNewRow == nil) {
+        self.customNewRow = [[TDListCustomRow alloc]initWithFrame:CGRectMake(0,height, ROW_WIDTH , 0)];
         self.customNewRow .listTextField.text =PINCH_OUT_TEXT;
         [self addSubview:self.customNewRow];
     }
