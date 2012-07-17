@@ -9,6 +9,7 @@
 // Main View containing Themes settings and lists
 
 #import "TDMainViewController.h"
+#import "TDListViewController.h"
 
 @interface TDMainViewController ()
 
@@ -21,6 +22,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.parentName = nil;
     }
     return self;
 }
@@ -48,9 +50,10 @@
 
 - (void) perform {
     
-    UIViewController *src = (UIViewController *) self;
-    TDViewController *destination = [self.storyboard instantiateViewControllerWithIdentifier:@"ListViewController"];
-    
+    TDMainViewController *src = (TDMainViewController *) self;
+    TDListViewController *destination = [self.storyboard instantiateViewControllerWithIdentifier:@"ListViewController"];
+    destination.parentName = @"Menu";
+    destination.goingBackFlag = NO;
     [UIView transitionWithView:src.navigationController.view duration:0.3
                        options:UIViewAnimationTransitionCurlUp
                     animations:^{

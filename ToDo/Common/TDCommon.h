@@ -18,4 +18,6 @@
 + (int)calculateLastIndexForArray:(NSMutableArray *)anyArray;
 + (void)setDoneStatus:(TDListCustomRow *)RowSwiped;
 + (float)calculateDistanceBetweenTwoPoints:(CGPoint)firstPoint :(CGPoint)secondPoint;
++ (float)getLastRowMaxYFromArray:(NSMutableArray *)AllViewsArray;
+
 @end

@@ -18,6 +18,7 @@
 // that is why we pass an index array containing indexes of checked rows
 
 #import "TDViewController.h"
+#import "TDListViewController.h"
 
 @interface TDViewController(privateMethods)
 - (void)createUI;
@@ -33,15 +34,28 @@
 @synthesize backgroundScrollView;
 @synthesize listArray,doneArray;
 @synthesize customViewsArray,checkedViewsArray;
+@synthesize parentName;
+@synthesize goingBackFlag;
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Release any cached data, images, etc that aren't in use.
 }
+- (void)animateWhenComingBack
+{
+    //if (self.goingBackFlag == YES) {
+        [UIView animateWithDuration:2 delay:0.1 options:UIViewAnimationOptionCurveEaseInOut animations:^{  
+            CGRect myFrame = self.view.frame;
+            myFrame.origin.y = 0;
+            self.view.frame = myFrame;
+            NSLog(@"height :%f",myFrame.origin.y);
+        } completion:nil];
+    //}
+    
+}
 
 #pragma mark - View lifecycle
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -132,6 +146,14 @@
     }
 }
 
+#pragma mark - Extra Pull Down Delegates
+- (NSString *)getParentName{
+    return self.parentName;
+}
+
+- (void)addParentView{
+    
+}
 
 #pragma mark - Pull Delegates
 - (void)TDCustomViewPulledUp
@@ -487,8 +509,13 @@
     self.backgroundScrollView = [[TDScrollView alloc] initWithFrame:CGRectMake(0, 0, SCROLLVIEW_WIDTH, SCROLLVIEW_HEIGHT)];
     self.backgroundScrollView.pullDelegate = self;
     self.backgroundScrollView.pinchOutdelegate = self;
+    self.backgroundScrollView.extraPullDownDelegate = self;
     [self.view addSubview:self.backgroundScrollView];
-    
+    [self populateCustomViewsArrayFromListArray];
+}
+
+- (void)populateCustomViewsArrayFromListArray
+{
     //static int y =1;
     for (int i =0; i<[self.listArray count]; i++)
     {
@@ -506,11 +533,10 @@
         [self.backgroundScrollView addSubview:row];
         [self.customViewsArray addObject:row];       
     }
-//    self.backgroundScrollView.customViewsArray =self.customViewsArray;
-//    self.backgroundScrollView.checkedViewsArray = self.checkedViewsArray;
+    //    self.backgroundScrollView.customViewsArray =self.customViewsArray;
+    //    self.backgroundScrollView.checkedViewsArray = self.checkedViewsArray;
     NSLog(@"array now %@",self.customViewsArray);
 }
-
 #pragma mark - Change Models
 
 - (void)rearrangeListObjectsAfterPullUpWithIndex:(NSMutableArray*)indexArray
@@ -597,6 +623,9 @@
 {
     [super viewWillAppear:animated];
     [TDCommon setTheme:THEME_HEAT_MAP];
+    //if (self.goingBackFlag == YES) {
+        [self animateWhenComingBack];
+    //}
 }
 
 - (void)viewDidAppear:(BOOL)animated

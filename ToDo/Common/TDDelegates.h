@@ -34,5 +34,14 @@
 - (void)shiftByScale:(float)scale forPinch:(BOOL)pinch withState:(UIGestureRecognizerState)state andCreating:(BOOL)creating forCurrentRow: (TDListCustomRow *) customNewRow;
 - (void)addNewRow:(TDListCustomRow *)newRow AtIndex:(int)index;
 - (void)removeNewRow:(TDListCustomRow *)newRow AtIndex:(int)index;
+@end
 
+@protocol TDCustomExtraPullDownDelegate<NSObject>
+- (NSString *)getParentName;
+//- (void)addParentView;
+- (void)removeCurrentView;
+@end
+
+@protocol TDCustomParentDelegate<NSObject>
+- (UIView *)addView;
 @end

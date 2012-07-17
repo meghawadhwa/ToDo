@@ -111,6 +111,12 @@ NSString *currentViewTheme = nil;
     else RowSwiped.doneStatus = TRUE;
 }
 
++ (float)getLastRowMaxYFromArray:(NSMutableArray *)AllViewsArray
+{
+    TDListCustomRow *lastRow = [AllViewsArray lastObject];
+    return CGRectGetMaxY(lastRow.frame);
+}
+
 + (NSString *)getTheme
 {
     return currentViewTheme;

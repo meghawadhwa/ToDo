@@ -36,20 +36,19 @@
             </objects>
             <point key="canvasLocation" x="2010" y="-5"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="5">
+        <!--Item View Controller-->
+        <scene sceneID="i8C-fI-4IF">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
-                <viewController storyboardIdentifier="ItemViewController" id="2" customClass="TDViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="3">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yOl-L3-3IE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="ItemViewController" id="B43-Vh-eOo" customClass="TDItemViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="i6M-kF-Ogu">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="fCW-rF-Osp"/>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="2482" y="0.0"/>
+            <point key="canvasLocation" x="2473" y="2"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jBM-4r-sGK">
@@ -71,6 +70,9 @@
         </scene>
     </scenes>
     <classes>
+        <class className="TDItemViewController" superclassName="TDViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TDItemViewController.h"/>
+        </class>
         <class className="TDListViewController" superclassName="TDViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/TDListViewController.h"/>
         </class>

@@ -20,17 +20,24 @@
 
 @class TDScrollView;
 @class ToDoList;
-@interface TDViewController : UIViewController<TDCustomRowSwipedDelegate,UITextFieldDelegate,TDCustomViewPulledDelegate,TDCustomRowTappedDelegate,TDCustomPinchOutDelegate>
+@class TDListViewController;
+
+@interface TDViewController : UIViewController<TDCustomRowSwipedDelegate,UITextFieldDelegate,TDCustomViewPulledDelegate,TDCustomRowTappedDelegate,TDCustomPinchOutDelegate,TDCustomExtraPullDownDelegate>
 @property(nonatomic,retain)TDScrollView *backgroundScrollView;
 @property(nonatomic,retain) NSMutableArray *listArray;
 @property(nonatomic,retain) NSMutableArray *doneArray;
 @property(nonatomic,retain) NSMutableArray *customViewsArray;
 @property(nonatomic,retain) NSMutableArray *checkedViewsArray;
+@property(nonatomic,retain) NSString *parentName;
+@property(nonatomic,assign) BOOL goingBackFlag;
 
 - (void)getDataFromServer;
 - (void)rearrangeRowsAfterRemovingObjectAtIndex:(NSMutableArray*)indexArray withDeletionFlag:(BOOL)flag fromRequiredArray:(NSMutableArray*) requiredArray;
 - (void)rearrangeListObjectsAfterRemovingObjectAtIndex:(NSMutableArray*)indexArray withDeletionFlag:(BOOL)flag fromModelArray:(NSMutableArray *)modelArray;
 -(void)rearrangeRowsAfterPullUpAtIndex:(NSMutableArray*)indexArray;
 - (void)rearrangeListObjectsAfterPullUpWithIndex:(NSMutableArray*)indexArray;
+- (void)populateCustomViewsArrayFromListArray;
+- (void)animateWhenComingBack;
+
 @end
 

@@ -13,11 +13,14 @@
 #import "TDRowLayer.h"
 
 #define HORIZ_SWIPE_DRAG_MAX  4
-#define VERT_PULL_DRAG_MIN   55
-#define VERT_PULL_UP_DRAG_MIN 115
+#define EXTRA_PULL_DOWN_MIN  ROW_HEIGHT *2
+#define VERT_PULL_DRAG_MIN   ROW_HEIGHT
+#define VERT_PULL_UP_DRAG_MIN ROW_HEIGHT *2
 #define DEGREE_TO_RADIAN 0.0174532925
 #define EMPTY_BOX [UIImage imageNamed:@"empty_box.png"]
 #define FULL_BOX [UIImage imageNamed:@"full_box.png"]
+#define BIG_ARROW_UP @"arrow-up.png"
+#define BIG_ARROW_DOWN @"arrow-down.png"
 
 @interface TDScrollView(privateMethods)
 - (void)customViewPullUpDetected:(NSSet *)touches withEvent:(UIEvent*)event;
@@ -49,6 +52,9 @@ static float rotationAngle; // global variable
 @synthesize pinchRecognizer;
 @synthesize pinchOutdelegate;
 @synthesize creatingNewRow;
+@synthesize extraPullDownDetected;
+@synthesize switchUpView,upArrowImageView,smileyImageView;
+@synthesize extraPullDownDelegate,extraPullUpDetected;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -270,6 +276,7 @@ static float rotationAngle; // global variable
         pullDownDetected = FALSE;
         pullUpDetected = FALSE;
         startedpullingDownFlag = FALSE;
+        extraPullDownDetected = NO;
          rotationAngle = 85.0; 
     }
 }
@@ -315,6 +322,9 @@ static float rotationAngle; // global variable
         float scrolledDistanceY = self.center.y - initialCentre.y;
         //static float rotationAngle = 85.0f;
        
+        [self extraPullDownDetectedByScrolledDistance:scrolledDistanceY];
+        [self createViewForExtraPullDown];
+        
         CGFloat originY = self.frame.origin.y;
         if (originY >0) {
             startedpullingDownFlag = YES;
@@ -348,25 +358,15 @@ static float rotationAngle; // global variable
             }
         }
         else if(scrolledDistanceY <= VERT_PULL_UP_DRAG_MIN && startedpullingDownFlag == NO)
+        { 
+            [self createViewForPullUp];
+            extraPullUpDetected = YES;
+        }
+        else if(scrolledDistanceY > VERT_PULL_UP_DRAG_MIN && startedpullingDownFlag == NO)
         {
-            [self createPullUpView];
-            if ([pullDelegate checkedRowsExist]) // checks If already checked rows exists
-            {
-                [self createArrowImageView];
-            }
-            else
-            {
-                self.pullUpView.alpha = 0.2;
-                return;
-            }
-            
+            extraPullUpDetected = NO;
         }
-        
-        if (self.arrowImageView) {
-            CGRect arrowFrame = self.arrowImageView.frame;
-            arrowFrame.origin.y -= deltaY/3.1;
-            [self.arrowImageView setFrame:arrowFrame];
-        }
+        [self animateArrowForPullUpbyScrolledDistance:deltaY];
         CALayer *layer = self.customNewRow.layer;
         layer.anchorPoint =CGPointMake(0.5, 1);
         CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
@@ -417,6 +417,17 @@ static float rotationAngle; // global variable
     if (self.overlayView) {
         return;
     }
+    if (self.switchUpView !=nil ) {
+    [self removeExtraPullDownView];
+    }
+    if(extraPullDownDetected == YES){
+        if ([self.extraPullDownDelegate getParentName]) {
+        [self.extraPullDownDelegate removeCurrentView];
+            return;
+        }
+    pullDownDetected = NO;
+    }
+    
     if (self.pullUpView) {
         [self.pullUpView removeFromSuperview];
         self.pullUpView = nil;
@@ -437,6 +448,48 @@ static float rotationAngle; // global variable
 }
 
 # pragma mark - PULL UP METHODS
+- (void)createViewForPullUp
+{
+// check If it is Items view controller,then create pull up view to remove checked items
+if ([self.extraPullDownDelegate getParentName] == @"Lists")  [self createPullUpViewToComplete];
+else [self createPullUpViewToMoveDown];
+}
+
+-(void)createPullUpViewToMoveDown
+{
+    if(self.extraPullUpDetected == YES)
+    {
+        [self createArrowImageViewWithImageName:BIG_ARROW_DOWN];
+        [self createSwitchUpView];
+    }
+    else {
+        if (self.upArrowImageView) self.upArrowImageView.hidden = YES;
+        else if(self.smileyImageView) self.smileyImageView.hidden = YES;
+        self.switchUpView.hidden = YES;
+    }
+}
+
+- (void)createPullUpViewToComplete
+{
+    [self createPullUpView];
+    if ([pullDelegate checkedRowsExist]) // checks If already checked rows exists
+    {
+        [self createArrowImageView];
+    }
+    else
+    {
+        self.pullUpView.alpha = 0.2;
+        return;
+    }
+}
+- (void)animateArrowForPullUpbyScrolledDistance:(float)deltaY
+{
+    if (self.arrowImageView) {
+        CGRect arrowFrame = self.arrowImageView.frame;
+        arrowFrame.origin.y -= deltaY/3.1;
+        [self.arrowImageView setFrame:arrowFrame];
+    }
+}
 
 - (void)createArrowImageView
 {
@@ -470,6 +523,101 @@ static float rotationAngle; // global variable
     [self.pullUpView addSubview:pullUpLabel];
     [self.pullUpView addSubview:self.boxImageView];
     [self addSubview:self.pullUpView];
+}
+
+# pragma mark - EXTRA PULL DOWN METHODS
+- (void)removeExtraPullDownView
+{
+    if (self.upArrowImageView) {
+        [self.upArrowImageView removeFromSuperview];
+        self.upArrowImageView =nil;
+    }
+    else if(self.smileyImageView){
+        [self.smileyImageView removeFromSuperview];
+        self.smileyImageView = nil;
+    }
+    [self.switchUpView removeFromSuperview];
+    self.switchUpView = nil;
+}
+
+- (void) extraPullDownDetectedByScrolledDistance:(float)deltaY
+{
+    if (!self.customNewRow) {
+        self.extraPullDownDetected = NO;
+        return;
+    }
+    if ((deltaY >= EXTRA_PULL_DOWN_MIN) && ([self.customNewRow.listTextField.text isEqualToString:RELEASE_AFTER_PULL_TEXT])){
+        self.extraPullDownDetected = YES;
+        return;
+    }
+    self.extraPullDownDetected = NO;
+    NSLog(@"scrolledY %f %i",deltaY,self.extraPullDownDetected);
+}
+
+- (void)createViewForExtraPullDown
+{
+    if (self.extraPullDownDetected == YES) {
+        self.customNewRow.hidden = YES;
+        [self createArrowImageViewWithImageName:BIG_ARROW_UP];
+        [self createSwitchUpView];
+        return;
+    }
+    else {
+        if (self.upArrowImageView) self.upArrowImageView.hidden = YES;
+        else if(self.smileyImageView) self.smileyImageView.hidden = YES;
+        self.switchUpView.hidden = YES;
+        self.customNewRow.hidden = NO;
+    }
+}
+
+- (void)createArrowImageViewWithImageName:(NSString *)imageName
+{
+    if (self.upArrowImageView != nil) {
+        self.upArrowImageView.hidden = NO;
+        return;
+    }
+    else if (self.smileyImageView != nil) {
+        self.smileyImageView.hidden = NO;
+        return;
+    }
+    if ([self.extraPullDownDelegate getParentName] !=nil) {
+    self.upArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
+    self.upArrowImageView.backgroundColor = [UIColor clearColor];
+    [self.upArrowImageView setFrame:CGRectMake(80, -50, 18, 24)];
+    [self addSubview:self.upArrowImageView];
+    }
+    else {
+        self.smileyImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"smilie.png"]];
+        self.smileyImageView.backgroundColor = [UIColor clearColor];
+        [self.smileyImageView setFrame:CGRectMake(70, -55, 33, 37)];
+        [self addSubview:self.smileyImageView];
+    }
+}
+
+- (void)createSwitchUpView
+{
+    if (self.switchUpView != nil) {
+        self.switchUpView.hidden = NO;
+        return;
+    }
+    
+    UILabel *switchUpLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200,30)];
+    NSString * parent = [self.extraPullDownDelegate getParentName];
+    if (parent!= nil) {
+        switchUpLabel.text = [NSString stringWithFormat:@"Switch to %@",parent];
+    }
+    else {
+        switchUpLabel.text = @"Nothing beyond it!!";
+    }
+    switchUpLabel.textAlignment = UITextAlignmentLeft;
+    switchUpLabel.textColor = [UIColor whiteColor];
+    switchUpLabel.backgroundColor = [UIColor clearColor];
+    switchUpLabel.font = [UIFont boldSystemFontOfSize:18];
+
+    self.switchUpView = [[UIView alloc] initWithFrame:CGRectMake(115, -50, 200, 30)];
+    self.switchUpView.backgroundColor = [UIColor clearColor];
+    [self.switchUpView addSubview:switchUpLabel];
+    [self addSubview:self.switchUpView];
 }
 
 #pragma mark - PULL DOWN METHODS

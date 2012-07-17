@@ -31,6 +31,10 @@
 		BA54EFEF15A5A8030023D605 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = BA54EFEA15A5A8030023D605 /* delete.png */; };
 		BA54EFF015A5A8030023D605 /* empty_box.png in Resources */ = {isa = PBXBuildFile; fileRef = BA54EFEB15A5A8030023D605 /* empty_box.png */; };
 		BA54EFF115A5A8030023D605 /* full_box.png in Resources */ = {isa = PBXBuildFile; fileRef = BA54EFEC15A5A8030023D605 /* full_box.png */; };
+		BAF74DDB15B4969B00F58B44 /* TDItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF74DDA15B4969B00F58B44 /* TDItemViewController.m */; };
+		BAFF848015B576A600B959E4 /* smilie.png in Resources */ = {isa = PBXBuildFile; fileRef = BAFF847F15B576A600B959E4 /* smilie.png */; };
+		BAFFEA9F15B42B3F00073498 /* arrow-down.png in Resources */ = {isa = PBXBuildFile; fileRef = BAFFEA9D15B42B3F00073498 /* arrow-down.png */; };
+		BAFFEAA015B42B3F00073498 /* arrow-up.png in Resources */ = {isa = PBXBuildFile; fileRef = BAFFEA9E15B42B3F00073498 /* arrow-up.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +79,11 @@
 		BA54EFEA15A5A8030023D605 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		BA54EFEB15A5A8030023D605 /* empty_box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_box.png; sourceTree = "<group>"; };
 		BA54EFEC15A5A8030023D605 /* full_box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = full_box.png; sourceTree = "<group>"; };
+		BAF74DD915B4969B00F58B44 /* TDItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDItemViewController.h; sourceTree = "<group>"; };
+		BAF74DDA15B4969B00F58B44 /* TDItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDItemViewController.m; sourceTree = "<group>"; };
+		BAFF847F15B576A600B959E4 /* smilie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smilie.png; sourceTree = "<group>"; };
+		BAFFEA9D15B42B3F00073498 /* arrow-down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-down.png"; sourceTree = "<group>"; };
+		BAFFEA9E15B42B3F00073498 /* arrow-up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-up.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +137,8 @@
 				BA0CBAE015906A1B004FA928 /* MainStoryboard.storyboard */,
 				BA0CBAE315906A1B004FA928 /* TDViewController.h */,
 				BA0CBAE415906A1B004FA928 /* TDViewController.m */,
+				BAF74DD915B4969B00F58B44 /* TDItemViewController.h */,
+				BAF74DDA15B4969B00F58B44 /* TDItemViewController.m */,
 				BA0CBB26159084B7004FA928 /* TDListViewController.h */,
 				BA0CBB27159084B7004FA928 /* TDListViewController.m */,
 				BA0CBB2915908756004FA928 /* TDMainViewController.h */,
@@ -201,6 +212,9 @@
 		BA0CBB0A15907948004FA928 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BAFF847F15B576A600B959E4 /* smilie.png */,
+				BAFFEA9D15B42B3F00073498 /* arrow-down.png */,
+				BAFFEA9E15B42B3F00073498 /* arrow-up.png */,
 				BA54EFE815A5A8030023D605 /* arrow.png */,
 				BA54EFE915A5A8030023D605 /* check.png */,
 				BA54EFEA15A5A8030023D605 /* delete.png */,
@@ -278,6 +292,9 @@
 				BA54EFEF15A5A8030023D605 /* delete.png in Resources */,
 				BA54EFF015A5A8030023D605 /* empty_box.png in Resources */,
 				BA54EFF115A5A8030023D605 /* full_box.png in Resources */,
+				BAFFEA9F15B42B3F00073498 /* arrow-down.png in Resources */,
+				BAFFEAA015B42B3F00073498 /* arrow-up.png in Resources */,
+				BAFF848015B576A600B959E4 /* smilie.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,6 +318,7 @@
 				BA54EFE515A5A7EE0023D605 /* TDListCustomRow.m in Sources */,
 				BA54EFE615A5A7EE0023D605 /* TDScrollView.m in Sources */,
 				BA54EFE715A5A7EE0023D605 /* TDStrikedLabel.m in Sources */,
+				BAF74DDB15B4969B00F58B44 /* TDItemViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

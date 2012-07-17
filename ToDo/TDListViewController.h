@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TDViewController.h"
-
-@interface TDListViewController : TDViewController<TDCustomRowTappedDelegate>
+@class TDItemViewController;
+@interface TDListViewController : TDViewController<TDCustomRowTappedDelegate,TDCustomExtraPullDownDelegate>
 
 @end
