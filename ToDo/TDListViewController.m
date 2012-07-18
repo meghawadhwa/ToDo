@@ -106,14 +106,12 @@
         myFrame.origin.y = 480;
         self.view.frame = myFrame; 
     } completion:^ (BOOL finished) {
-        if (finished) {
             [self.navigationController popViewControllerAnimated:NO]; 
 //            TDMainViewController * mainController =(TDMainViewController *)[self.navigationController topViewController];
 //            CGRect myFrame = mainController.view.frame;
 //            myFrame.origin.y = -480;
 //            mainController.view.frame = myFrame;
 //            mainController.goingBackFlag = YES;
-        }
     }];
     
 }

@@ -78,7 +78,6 @@
                         [src.navigationController pushViewController:destination animated:YES];
                     }
                     completion:NULL];
-    
 }
 
 - (void)addChildView
@@ -120,28 +119,48 @@
     // Release any retained subviews of the main view.
 }
 
+- (void)toggleSubViews:(BOOL)hide
+{
+    if (hide) {
+        for (UIView *subview in self.view.subviews)
+        {
+            subview.hidden = YES;
+        }
+    }
+    else {
+        for (UIView *subview in self.view.subviews)
+        {
+            subview.hidden = NO;
+        }
+    }
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [TDCommon setTheme:THEME_MAIN_GRAY];
     self.childName = @"Lists";
+    [self toggleSubViews:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
-    [UIView animateWithDuration:0.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{  
+//    NSLog(@"frame is : %@", self.view.frame);
+    [UIView animateWithDuration:0.0 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{  
         CGRect myFrame = self.view.frame;
         myFrame.origin.y = -480.0f;
         self.view.frame = myFrame;
-        NSLog(@"height :%f",myFrame.origin.y);
-    } completion:^(BOOL fin){if(fin){
-        [UIView animateWithDuration:1 animations:^{
+    } completion:^(BOOL fin){
+        [UIView animateWithDuration:0.6 delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [self toggleSubViews:NO];
             CGRect myFrame = self.view.frame;
             myFrame.origin.y = 0.0;
-            self.view.frame = myFrame;}];
-    }}];
+            self.view.frame = myFrame;
+        } 
+        completion: nil];
+    }];
 }
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
