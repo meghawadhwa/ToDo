@@ -191,7 +191,8 @@
                     self.checkImgView =nil;
                     self.backgroundColor = self.defaultRowColor;
                     self.listTextField.textColor = [UIColor whiteColor];
-                    [self.strikedLabel removeFromSuperview];    
+                    [self.strikedLabel removeFromSuperview];
+                    self.strikedLabel = nil;
                     leftSwipeDetected = NO;
                 }
             }
