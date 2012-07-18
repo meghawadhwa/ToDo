@@ -125,9 +125,10 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 //    NSLog(@"frame is : %@", self.view.frame);
+    float originY = [self getLastRowHeight];
     [UIView animateWithDuration:0.0 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{  
         CGRect myFrame = self.view.frame;
-        myFrame.origin.y = -480.0f;
+        myFrame.origin.y = -originY;
         self.view.frame = myFrame;
     } completion:^(BOOL fin){
         [UIView animateWithDuration:0.6 delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{

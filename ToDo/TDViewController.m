@@ -565,7 +565,17 @@
     NSLog(@"array now %@",self.customViewsArray);
 }
 
-
+- (float)getLastRowHeight
+{
+    float lastRowheight = 480;
+    if ([self.checkedViewsArray lastObject]) {
+        lastRowheight = [TDCommon getLastRowMaxYFromArray:self.checkedViewsArray];
+    }
+    else if([self.customViewsArray lastObject]){
+        lastRowheight = [TDCommon getLastRowMaxYFromArray:self.customViewsArray];
+    }
+    return lastRowheight;
+}
 #pragma mark - Change Models
 
 - (void)rearrangeListObjectsAfterPullUpWithIndex:(NSMutableArray*)indexArray

@@ -40,6 +40,7 @@
 - (void)populateCustomViewsArrayFromListArray;
 - (void)animateWhenComingBack;
 - (void)toggleSubViews:(BOOL)hide;
+- (float)getLastRowHeight;
 
 @end
 
