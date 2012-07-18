@@ -30,7 +30,7 @@
 @property(nonatomic,retain) NSMutableArray *checkedViewsArray;
 @property(nonatomic,retain) NSString *parentName;
 @property(nonatomic,retain) NSString *childName;
-@property(nonatomic,assign) BOOL goingBackFlag;
+@property(nonatomic,assign) BOOL goingDownByPullUp;
 
 - (void)getDataFromServer;
 - (void)rearrangeRowsAfterRemovingObjectAtIndex:(NSMutableArray*)indexArray withDeletionFlag:(BOOL)flag fromRequiredArray:(NSMutableArray*) requiredArray;

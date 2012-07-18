@@ -27,17 +27,13 @@
     NSNumber *donestatus= [NSNumber numberWithInt:0];
     NSNumber *id2= [NSNumber numberWithInt:101];
     NSNumber *id3= [NSNumber numberWithInt:102];
-    NSNumber *id4= [NSNumber numberWithInt:103];
-    NSNumber *id5= [NSNumber numberWithInt:104];
 
-    NSDictionary *dict1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Swipe Left To Check",kListName,id1,kListId,donestatus,kDoneStatus,nil];
-    NSDictionary *dict2 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Swipe Checked To UnCheck",kListName,id2,kListId,donestatus,kDoneStatus,nil];
-    NSDictionary *dict3 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Pull Down To Create New Item",kListName,id3,kListId,donestatus,kDoneStatus,nil];
-    NSDictionary *dict4 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Extra Pull Down To Move One Level Up",kListName,id4,kListId,donestatus,kDoneStatus,nil];
-    NSDictionary *dict5 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Pull Up To Clear",kListName,id5,kListId,donestatus,kDoneStatus,nil];
+    NSDictionary *dict1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Swipe Checked",kListName,id1,kListId,donestatus,kDoneStatus,nil];
+    NSDictionary *dict2 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Extra Pull Down",kListName,id2,kListId,donestatus,kDoneStatus,nil];
+    NSDictionary *dict3 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Extra Pull Up",kListName,id3,kListId,donestatus,kDoneStatus,nil];
 
-    NSArray *responseArray = [NSArray arrayWithObjects:dict1,dict2,dict3,dict4,dict5,nil];
-    for (int i =0; i<5 ; i++) {
+    NSArray *responseArray = [NSArray arrayWithObjects:dict1,dict2,dict3,nil];
+    for (int i =0; i<3 ; i++) {
         ToDoList * aList = [[ToDoList alloc] init];
         [aList readFromDictionary:[responseArray objectAtIndex:i]];
         [self.listArray addObject:aList];
@@ -74,7 +70,23 @@
 
 }
 - (void)viewDidAppear:(BOOL)animated
-{
+{ 
+    if (self.goingDownByPullUp) {
+    [UIView animateWithDuration:0.0 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{  
+        CGRect myFrame = self.view.frame;
+        myFrame.origin.y = 480;
+        self.view.frame = myFrame;
+    } completion:^(BOOL fin){
+        [UIView animateWithDuration:0.6 delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [self toggleSubViews:NO];
+            CGRect myFrame = self.view.frame;
+            myFrame.origin.y = 0.0;
+            self.view.frame = myFrame;
+        } 
+                         completion: nil];
+    }];
+}
+else {
     float originY = [self getLastRowHeight];
     [UIView animateWithDuration:0.0 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{  
         CGRect myFrame = self.view.frame;
@@ -89,8 +101,8 @@
         } 
                          completion: nil];
     }];
+    }
 }
-
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];

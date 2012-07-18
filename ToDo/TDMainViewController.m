@@ -71,7 +71,8 @@
     TDMainViewController *src = (TDMainViewController *) self;
     TDListViewController *destination = [self.storyboard instantiateViewControllerWithIdentifier:@"ListViewController"];
     destination.parentName = @"Menu";
-    destination.goingBackFlag = NO;
+    destination.goingDownByPullUp = NO;
+    src.goingDownByPullUp = NO;
     [src.navigationController pushViewController:destination animated:YES];
 }
 
@@ -80,21 +81,17 @@
     TDMainViewController *src = (TDMainViewController *) self;
     TDListViewController *destination = [self.storyboard instantiateViewControllerWithIdentifier:@"ListViewController"];
     destination.parentName = @"Menu";
-    destination.goingBackFlag = NO;
-    [UIView animateWithDuration:0.3 animations:^{
-        CGRect myFrame = src.view.frame;
+    destination.goingDownByPullUp = YES;
+    [UIView animateWithDuration:BACK_ANIMATION delay:BACK_ANIMATION_DELAY options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        CGRect myFrame = self.view.frame;
         myFrame.origin.y = -480;
-        src.view.frame = myFrame;
-    } completion:^(BOOL finished){if(finished)
-    [UIView transitionWithView:src.navigationController.view duration:0.3
-                       options:UIViewAnimationTransitionNone
-                    animations:^{
-                        
-                        [src.navigationController pushViewController:destination animated:YES];
-                    }
-                    completion:NULL];
+        self.view.frame = myFrame; 
+    } completion:^ (BOOL finished) {
+        [src.navigationController pushViewController:destination animated:NO];
+        CGRect myFrame = self.view.frame;
+        myFrame.origin.y = 0;
+        self.view.frame = myFrame; 
     }];
-    
 }
 
 - (void)viewDidLoad
@@ -125,6 +122,11 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 //    NSLog(@"frame is : %@", self.view.frame);
+    if(self.goingDownByPullUp){
+        [self toggleSubViews:NO]; 
+        self.goingDownByPullUp = NO;
+    }
+    else {
     float originY = [self getLastRowHeight];
     [UIView animateWithDuration:0.0 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{  
         CGRect myFrame = self.view.frame;
@@ -139,6 +141,7 @@
         } 
         completion: nil];
     }];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

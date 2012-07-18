@@ -35,7 +35,7 @@
 @synthesize listArray,doneArray;
 @synthesize customViewsArray,checkedViewsArray;
 @synthesize parentName;
-@synthesize goingBackFlag;
+@synthesize goingDownByPullUp;
 @synthesize childName;
 
 - (void)didReceiveMemoryWarning

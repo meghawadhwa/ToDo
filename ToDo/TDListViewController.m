@@ -40,14 +40,29 @@
     src.childName = listName;
     destination.parentName = @"Lists";
     destination.childName = nil;
-    destination.goingBackFlag = NO;
+    destination.goingDownByPullUp = NO;
     //destination.parentDelegate = self;
     [src.navigationController pushViewController:destination animated:YES];   
 }
 
 - (void)addChildView
 {
-    [self performWithListName:self.childName];
+    TDListViewController *src = (TDListViewController *) self;
+    TDItemViewController *destination = [self.storyboard instantiateViewControllerWithIdentifier:@"ItemViewController"];
+    destination.parentName = @"Lists";
+    destination.childName = nil;
+    destination.goingDownByPullUp = YES;
+    //destination.parentDelegate = self;
+    [UIView animateWithDuration:BACK_ANIMATION delay:BACK_ANIMATION_DELAY options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        CGRect myFrame = self.view.frame;
+        myFrame.origin.y = -480;
+        self.view.frame = myFrame; 
+    } completion:^ (BOOL finished) {
+        [src.navigationController pushViewController:destination animated:NO];
+        CGRect myFrame = self.view.frame;
+        myFrame.origin.y = 0;
+        self.view.frame = myFrame; 
+    }];
 }
 #pragma mark- Parent Delegate
 //- (UIView *)addView
@@ -68,7 +83,7 @@
     NSNumber *id1= [NSNumber numberWithInt:100];
     NSNumber *donestatus= [NSNumber numberWithInt:0];
     
-    NSDictionary *dict1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"PersonalList",kListName,id1,kListId,donestatus,kDoneStatus,nil];
+    NSDictionary *dict1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Personal List",kListName,id1,kListId,donestatus,kDoneStatus,nil];
     NSArray *responseArray = [NSArray arrayWithObjects:dict1,nil];
     for (int i =0; i<1 ; i++) {
         ToDoList * aList = [[ToDoList alloc] init];
@@ -128,6 +143,23 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    if (self.goingDownByPullUp) {
+        [UIView animateWithDuration:0.0 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{  
+            CGRect myFrame = self.view.frame;
+            myFrame.origin.y = 480;
+            self.view.frame = myFrame;
+        } completion:^(BOOL fin){
+            [UIView animateWithDuration:0.6 delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                [self toggleSubViews:NO];
+                CGRect myFrame = self.view.frame;
+                myFrame.origin.y = 0.0;
+                self.view.frame = myFrame;
+            } 
+                             completion: nil];
+        }];
+        self.goingDownByPullUp = NO;
+    }
+    else {
     float originY = [self getLastRowHeight];
     [UIView animateWithDuration:0.0 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{  
         CGRect myFrame = self.view.frame;
@@ -142,5 +174,6 @@
         } 
                          completion: nil];
     }];
+    }
 }
 @end
