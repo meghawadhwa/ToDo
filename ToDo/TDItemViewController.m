@@ -30,11 +30,11 @@
     } completion:^ (BOOL finished) {
         if (finished) {
             [self.navigationController popViewControllerAnimated:NO]; 
-            TDListViewController * listController =(TDListViewController *)[self.navigationController topViewController];
-            CGRect myFrame = listController.view.frame;
-            myFrame.origin.y = -480;
-            listController.view.frame = myFrame;
-            listController.goingBackFlag = YES;
+//            TDListViewController * listController =(TDListViewController *)[self.navigationController topViewController];
+////            CGRect myFrame = listController.view.frame;
+//            myFrame.origin.y = -480;
+//            listController.view.frame = myFrame;
+//              listController.goingBackFlag = YES;
         }
     }];
 

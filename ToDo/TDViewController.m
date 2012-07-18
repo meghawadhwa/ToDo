@@ -36,6 +36,7 @@
 @synthesize customViewsArray,checkedViewsArray;
 @synthesize parentName;
 @synthesize goingBackFlag;
+@synthesize childName;
 
 - (void)didReceiveMemoryWarning
 {
@@ -72,7 +73,7 @@
 
 #pragma mark - Navigation 
 
-- (void)TDCustomRowTapped
+- (void)TDCustomRowTapped:(TDListCustomRow *)sender
 {
     [self perform];
 }
@@ -154,7 +155,14 @@
 - (void)addParentView{
     
 }
+#pragma mark - Extra Pull Up Delegates
 
+- (NSString *)getChildName
+{
+    return self.childName;
+}
+
+- (void)addChildView{}
 #pragma mark - Pull Delegates
 - (void)TDCustomViewPulledUp
 {
@@ -510,6 +518,7 @@
     self.backgroundScrollView.pullDelegate = self;
     self.backgroundScrollView.pinchOutdelegate = self;
     self.backgroundScrollView.extraPullDownDelegate = self;
+    self.backgroundScrollView.extraPullUpDelegate = self;
     [self.view addSubview:self.backgroundScrollView];
     [self populateCustomViewsArrayFromListArray];
 }
@@ -624,8 +633,12 @@
     [super viewWillAppear:animated];
     [TDCommon setTheme:THEME_HEAT_MAP];
     //if (self.goingBackFlag == YES) {
-        [self animateWhenComingBack];
+      //  [self animateWhenComingBack];
     //}
+//    CGRect myFrame = self.view.frame;
+//    myFrame.origin.y = -480.0f;
+//    self.view.frame = myFrame;
+
 }
 
 - (void)viewDidAppear:(BOOL)animated

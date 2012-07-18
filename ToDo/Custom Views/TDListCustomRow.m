@@ -62,9 +62,9 @@
 
 - (void)customRowTapped
 {
-    if ([tapDelegate respondsToSelector:@selector(TDCustomRowTapped)]) 
+    if ([tapDelegate respondsToSelector:@selector(TDCustomRowTapped:)]) 
     {
-    [self.tapDelegate TDCustomRowTapped];
+        [self.tapDelegate TDCustomRowTapped:self];
     }
 }
 

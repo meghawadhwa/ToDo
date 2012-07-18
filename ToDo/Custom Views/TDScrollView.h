@@ -24,6 +24,7 @@
 @property(nonatomic,assign) id<TDCustomViewPulledDelegate> pullDelegate;
 @property(nonatomic,assign) id<TDCustomPinchOutDelegate> pinchOutdelegate;
 @property(nonatomic,assign) id<TDCustomExtraPullDownDelegate> extraPullDownDelegate;
+@property(nonatomic,assign) id<TDCustomExtraPullUpDelegate> extraPullUpDelegate;
 @property(nonatomic,retain) TDListCustomRow *customNewRow;
 @property(nonatomic,retain)  TDListCustomRow *RowAdded;
 @property(nonatomic,retain)  UIView *pullUpView;

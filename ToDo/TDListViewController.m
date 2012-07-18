@@ -25,19 +25,21 @@
     return self;
 }
 
-- (void)TDCustomRowTapped
+- (void)TDCustomRowTapped:(TDListCustomRow *)sender
 {
-    if ([super respondsToSelector:@selector(TDCustomRowTapped)]) {
+    if ([super respondsToSelector:@selector(TDCustomRowTapped:)]) {
     // TO CHECK :[super TDCustomRowTapped];
     }
-    [self perform];
+    [self performWithListName:sender.listTextField.text];
 }
 
-- (void) perform {
+- (void)performWithListName:(NSString *)listName {
     
     TDListViewController *src = (TDListViewController *) self;
     TDItemViewController *destination = [self.storyboard instantiateViewControllerWithIdentifier:@"ItemViewController"];
+    src.childName = listName;
     destination.parentName = @"Lists";
+    destination.childName = nil;
     destination.goingBackFlag = NO;
     //destination.parentDelegate = self;
     [UIView transitionWithView:src.navigationController.view duration:0.3
@@ -48,7 +50,10 @@
                     completion:NULL];
     
 }
-
+- (void)addChildView
+{
+    [self performWithListName:self.childName];
+}
 #pragma mark- Parent Delegate
 //- (UIView *)addView
 ////{
@@ -84,11 +89,11 @@
     } completion:^ (BOOL finished) {
         if (finished) {
             [self.navigationController popViewControllerAnimated:NO]; 
-            TDMainViewController * mainController =(TDMainViewController *)[self.navigationController topViewController];
-            CGRect myFrame = mainController.view.frame;
-            myFrame.origin.y = -480;
-            mainController.view.frame = myFrame;
-            mainController.goingBackFlag = YES;
+//            TDMainViewController * mainController =(TDMainViewController *)[self.navigationController topViewController];
+//            CGRect myFrame = mainController.view.frame;
+//            myFrame.origin.y = -480;
+//            mainController.view.frame = myFrame;
+//            mainController.goingBackFlag = YES;
         }
     }];
     
@@ -102,6 +107,10 @@
 {
 	[super viewWillAppear:animated];
     [TDCommon setTheme:THEME_BLUE];
+    if (!self.childName && [self.customViewsArray count]!=0) {
+        TDListCustomRow *firstRow = (TDListCustomRow *)[self.customViewsArray objectAtIndex:0];
+        self.childName = firstRow.listTextField.text;
+    }
 }
 - (void)viewDidAppear:(BOOL)animated
 {

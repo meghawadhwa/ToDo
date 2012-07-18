@@ -24,7 +24,7 @@
 @end
 
 @protocol TDCustomRowTappedDelegate<NSObject>
-- (void)TDCustomRowTapped;
+- (void)TDCustomRowTapped:(TDListCustomRow *)sender;
 @end
 
 @protocol TDCustomPinchOutDelegate<NSObject>
@@ -40,6 +40,11 @@
 - (NSString *)getParentName;
 //- (void)addParentView;
 - (void)removeCurrentView;
+@end
+
+@protocol TDCustomExtraPullUpDelegate<NSObject>
+- (NSString *)getChildName;
+- (void)addChildView;
 @end
 
 @protocol TDCustomParentDelegate<NSObject>

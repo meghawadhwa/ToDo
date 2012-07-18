@@ -22,13 +22,14 @@
 @class ToDoList;
 @class TDListViewController;
 
-@interface TDViewController : UIViewController<TDCustomRowSwipedDelegate,UITextFieldDelegate,TDCustomViewPulledDelegate,TDCustomRowTappedDelegate,TDCustomPinchOutDelegate,TDCustomExtraPullDownDelegate>
+@interface TDViewController : UIViewController<TDCustomRowSwipedDelegate,UITextFieldDelegate,TDCustomViewPulledDelegate,TDCustomRowTappedDelegate,TDCustomPinchOutDelegate,TDCustomExtraPullDownDelegate,TDCustomExtraPullUpDelegate>
 @property(nonatomic,retain)TDScrollView *backgroundScrollView;
 @property(nonatomic,retain) NSMutableArray *listArray;
 @property(nonatomic,retain) NSMutableArray *doneArray;
 @property(nonatomic,retain) NSMutableArray *customViewsArray;
 @property(nonatomic,retain) NSMutableArray *checkedViewsArray;
 @property(nonatomic,retain) NSString *parentName;
+@property(nonatomic,retain) NSString *childName;
 @property(nonatomic,assign) BOOL goingBackFlag;
 
 - (void)getDataFromServer;

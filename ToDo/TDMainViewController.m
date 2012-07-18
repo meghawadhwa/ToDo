@@ -40,9 +40,9 @@
 //    }
 //}
 
-- (void)TDCustomRowTapped
+- (void)TDCustomRowTapped:(TDListCustomRow *)sender
 {
-    if ([super respondsToSelector:@selector(TDCustomRowTapped)]) {
+    if ([super respondsToSelector:@selector(TDCustomRowTapped:)]) {
         // TO CHECK :[super TDCustomRowTapped];
     }
     [self perform];
@@ -63,6 +63,27 @@
     
 }
 
+- (void)addChildView
+{
+    TDMainViewController *src = (TDMainViewController *) self;
+    TDListViewController *destination = [self.storyboard instantiateViewControllerWithIdentifier:@"ListViewController"];
+    destination.parentName = @"Menu";
+    destination.goingBackFlag = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect myFrame = src.view.frame;
+        myFrame.origin.y = -480;
+        src.view.frame = myFrame;
+    } completion:^(BOOL finished){if(finished)
+    [UIView transitionWithView:src.navigationController.view duration:0.3
+                       options:UIViewAnimationTransitionNone
+                    animations:^{
+                        
+                        [src.navigationController pushViewController:destination animated:YES];
+                    }
+                    completion:NULL];
+    }];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -79,8 +100,24 @@
 {
     [super viewWillAppear:animated];
     [TDCommon setTheme:THEME_MAIN_GRAY];
+    self.childName = @"Lists";
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [UIView animateWithDuration:0.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{  
+        CGRect myFrame = self.view.frame;
+        myFrame.origin.y = -480.0f;
+        self.view.frame = myFrame;
+        NSLog(@"height :%f",myFrame.origin.y);
+    } completion:^(BOOL fin){if(fin){
+        [UIView animateWithDuration:1 animations:^{
+            CGRect myFrame = self.view.frame;
+            myFrame.origin.y = 0.0;
+            self.view.frame = myFrame;}];
+    }}];
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
