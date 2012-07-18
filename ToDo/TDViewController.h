@@ -39,6 +39,7 @@
 - (void)rearrangeListObjectsAfterPullUpWithIndex:(NSMutableArray*)indexArray;
 - (void)populateCustomViewsArrayFromListArray;
 - (void)animateWhenComingBack;
+- (void)toggleSubViews:(BOOL)hide;
 
 @end
 

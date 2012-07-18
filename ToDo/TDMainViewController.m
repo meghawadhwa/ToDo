@@ -72,12 +72,7 @@
     TDListViewController *destination = [self.storyboard instantiateViewControllerWithIdentifier:@"ListViewController"];
     destination.parentName = @"Menu";
     destination.goingBackFlag = NO;
-    [UIView transitionWithView:src.navigationController.view duration:0.3
-                       options:UIViewAnimationTransitionCurlUp
-                    animations:^{
-                        [src.navigationController pushViewController:destination animated:YES];
-                    }
-                    completion:NULL];
+    [src.navigationController pushViewController:destination animated:YES];
 }
 
 - (void)addChildView
@@ -117,22 +112,6 @@
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
-}
-
-- (void)toggleSubViews:(BOOL)hide
-{
-    if (hide) {
-        for (UIView *subview in self.view.subviews)
-        {
-            subview.hidden = YES;
-        }
-    }
-    else {
-        for (UIView *subview in self.view.subviews)
-        {
-            subview.hidden = NO;
-        }
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

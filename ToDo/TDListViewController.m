@@ -42,14 +42,9 @@
     destination.childName = nil;
     destination.goingBackFlag = NO;
     //destination.parentDelegate = self;
-    [UIView transitionWithView:src.navigationController.view duration:0.3
-                       options:UIViewAnimationTransitionCurlUp
-                    animations:^{
-                        [src.navigationController pushViewController:destination animated:YES];
-                    }
-                    completion:NULL];
-    
+    [src.navigationController pushViewController:destination animated:YES];   
 }
+
 - (void)addChildView
 {
     [self performWithListName:self.childName];
@@ -128,9 +123,23 @@
         TDListCustomRow *firstRow = (TDListCustomRow *)[self.customViewsArray objectAtIndex:0];
         self.childName = firstRow.listTextField.text;
     }
+    [self toggleSubViews:YES];
 }
+
 - (void)viewDidAppear:(BOOL)animated
 {
-    
+    [UIView animateWithDuration:0.0 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{  
+        CGRect myFrame = self.view.frame;
+        myFrame.origin.y = -480.0f;
+        self.view.frame = myFrame;
+    } completion:^(BOOL fin){
+        [UIView animateWithDuration:0.6 delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [self toggleSubViews:NO];
+            CGRect myFrame = self.view.frame;
+            myFrame.origin.y = 0.0;
+            self.view.frame = myFrame;
+        } 
+                         completion: nil];
+    }];
 }
 @end

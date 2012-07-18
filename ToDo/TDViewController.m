@@ -522,6 +522,22 @@
     [self populateCustomViewsArrayFromListArray];
 }
 
+- (void)toggleSubViews:(BOOL)hide
+{
+    if (hide) {
+        for (TDListCustomRow *subview in self.view.subviews)
+        {
+            subview.hidden = YES;
+        }
+    }
+    else {
+        for (TDListCustomRow *subview in self.view.subviews)
+        {
+            subview.hidden = NO;
+        }
+    }
+}
+
 - (void)populateCustomViewsArrayFromListArray
 {
     //static int y =1;
