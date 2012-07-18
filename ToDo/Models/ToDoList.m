@@ -50,8 +50,8 @@
     
     if ([paramDictionary objectForKey:@"doneStatus"]) 
     {
-        //self.doneStatus = [[paramDictionary objectForKey:@"doneStatus"] boolValue];
-        self.doneStatus = FALSE;
+        self.doneStatus = [[paramDictionary objectForKey:@"doneStatus"] boolValue];
+        //self.doneStatus = FALSE;
     }
     
 

@@ -27,6 +27,24 @@
     return self;
 }
 
+- (void)createTemporaryModalData
+{
+    NSNumber *id1= [NSNumber numberWithInt:100];
+    NSNumber *donestatus= [NSNumber numberWithInt:0];
+    NSNumber *id2= [NSNumber numberWithInt:101];
+    NSNumber *id3= [NSNumber numberWithInt:102];
+    
+    NSDictionary *dict1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Lists",kListName,id1,kListId,donestatus,kDoneStatus,nil];
+    NSDictionary *dict2 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Themes",kListName,id2,kListId,donestatus,kDoneStatus,nil];
+    NSDictionary *dict3 = [[NSDictionary alloc] initWithObjectsAndKeys:@"Settings",kListName,id3,kListId,donestatus,kDoneStatus,nil];
+    NSArray *responseArray = [NSArray arrayWithObjects:dict1,dict2,dict3,nil];
+    for (int i =0; i<3 ; i++) {
+        ToDoList * aList = [[ToDoList alloc] init];
+        [aList readFromDictionary:[responseArray objectAtIndex:i]];
+        [self.listArray addObject:aList];
+    }
+}
+
 //-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 //{
 //    
@@ -82,12 +100,18 @@
                     }
                     completion:NULL];
     }];
+    
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
+    [TDCommon setTheme:THEME_MAIN_GRAY];
+    if ([self.listArray count] == 0) {
+        [self createTemporaryModalData];
+        [self populateCustomViewsArrayFromListArray];
+    }
 }
 
 - (void)viewDidUnload

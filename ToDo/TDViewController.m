@@ -68,7 +68,6 @@
     self.customViewsArray = [[NSMutableArray alloc] init];
     //[self getDataFromServer];                            // TODO :Fix Server 
     [self createUI];
-    
 }
 
 #pragma mark - Navigation 
@@ -537,15 +536,20 @@
         CGSize textSize = [[row.listTextField text] sizeWithFont:[row.listTextField font]];
         [row.listTextField setFrame:CGRectMake(row.listTextField.frame.origin.x, row.listTextField.frame.origin.y, textSize.width+5, textSize.height)];
         row.swipeDelegate = self;
+        row.tapDelegate = self;
         row.tag =toDoList.listId;
+        row.doneStatus = FALSE;
         NSLog(@" To Do List :%@,%i",toDoList.listName,y);
         [self.backgroundScrollView addSubview:row];
         [self.customViewsArray addObject:row];       
     }
     //    self.backgroundScrollView.customViewsArray =self.customViewsArray;
     //    self.backgroundScrollView.checkedViewsArray = self.checkedViewsArray;
+    [self rearrangeColorsBasedOnPrioirity];
     NSLog(@"array now %@",self.customViewsArray);
 }
+
+
 #pragma mark - Change Models
 
 - (void)rearrangeListObjectsAfterPullUpWithIndex:(NSMutableArray*)indexArray

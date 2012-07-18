@@ -68,10 +68,29 @@
 ////        return tempView;
 //}
 
+- (void)createTemporaryModalData
+{
+    NSNumber *id1= [NSNumber numberWithInt:100];
+    NSNumber *donestatus= [NSNumber numberWithInt:0];
+    
+    NSDictionary *dict1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"PersonalList",kListName,id1,kListId,donestatus,kDoneStatus,nil];
+    NSArray *responseArray = [NSArray arrayWithObjects:dict1,nil];
+    for (int i =0; i<1 ; i++) {
+        ToDoList * aList = [[ToDoList alloc] init];
+        [aList readFromDictionary:[responseArray objectAtIndex:i]];
+        [self.listArray addObject:aList];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [TDCommon setTheme:THEME_BLUE];
+    if ([self.listArray count] == 0) {
+        [self createTemporaryModalData];
+        [self populateCustomViewsArrayFromListArray];
+    }
 }
 
 - (void)viewDidUnload

@@ -28,3 +28,8 @@
 #define ROWS_SHIFTING_DURATION 0.5
 #define BACK_ANIMATION 0.6
 #define BACK_ANIMATION_DELAY 0.1
+
+//*** TEMP
+#define kListName @"listName"
+#define kListId @"id"
+#define kDoneStatus @"doneStatus"

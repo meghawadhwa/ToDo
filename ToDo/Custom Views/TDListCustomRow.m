@@ -51,7 +51,7 @@
         [self makeCheckedIcon];
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(customRowTapped)];
         [self addGestureRecognizer:tapGesture];
-        tapGesture = nil;
+        //tapGesture = nil;
         self.multipleTouchEnabled = NO;
         //[self divideIntoTwoLayers];
     }
@@ -62,7 +62,7 @@
 
 - (void)customRowTapped
 {
-    if ([tapDelegate respondsToSelector:@selector(TDCustomRowTapped:)]) 
+    if ([self.tapDelegate respondsToSelector:@selector(TDCustomRowTapped:)]) 
     {
         [self.tapDelegate TDCustomRowTapped:self];
     }
